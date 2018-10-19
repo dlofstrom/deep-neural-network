@@ -56,12 +56,16 @@ def cost_prime(AL, Y):
 # Ys: Batch of training labels
 # alpha: Learning rate (negative Gradient impact)
 # Return value:
-def backpropagate(Xs, Ys, alpha):
+def backpropagate(data, labels, alpha):
     global neurons
     global weights
+
+    Xs = list(data)
+    Ys = list(labels)
     
     if len(Xs) != len(Ys):
         print('Xs and Ys not same size')
+        return
     
     # Error lists filled with individual gradients
     dCdWs = []
@@ -131,26 +135,31 @@ def backpropagate(Xs, Ys, alpha):
 
 # Train network
 # TODO: implement
-def train():
-    global neurons
+def train(training_data, training_labels, batch_size, learning_rate):
     global weights
-        
-    X = np.random.rand(layer_sizes[0])
-    Y = np.array([1]+[0 for i in range(layer_sizes[-1]-1)])
-    n = 10
-    Xs = [np.copy(X) for i in range(10)]
-    Ys = [np.copy(Y) for i in range(10)]
-    costs = []
-    
+
     # Start with random weights and biases
     # Random number matrix of same shape
     weights = tuple([np.random.randn(*w.shape) for w in weights])
+    
+    # Divide trainig data into batches
+    training = list(zip(training_data, training_labels))
+    if len(training) % batch_size != 0:
+        training = training[:-(len(training) % batch_size)]
+    print(len(training))
+    print(len(training[0]))
+    
+    batches = [training[i:i+batch_size] for i in range(0, len(training), batch_size)]
 
-    for i in range(1000):
-        C = backpropagate(list(Xs), list(Ys), 0.1)
+    print(len(batches))
+    print(len(batches[0]))
+    costs = []
+    for batch in batches:
+        data, labels = zip(*batch)
+        C = backpropagate(data, labels, learning_rate)
         print("Average cost " + str(C))
         costs.append(C)
-
+        
     return costs
 
 if __name__ == "__main__":
@@ -161,9 +170,16 @@ if __name__ == "__main__":
     ##print("Biases")
     ##print(biases)
 
+    size = 10000
+    data = [np.random.rand(layer_sizes[0],1) for i in range(size)]
+    labels = [np.random.rand(layer_sizes[-1],1) for i in range(size)]
+    batch_size = 99
+    learning_rate = 0.1
+    
     print("Testing functions:")
     print("Train")
-    X = train()
+    train(data, labels, batch_size, learning_rate)
     print("Forward propagate")
-    print(forward_propagate(X))
+    print(forward_propagate([np.random.rand() for j in range(layer_sizes[0])]))
+
     
