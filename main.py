@@ -36,14 +36,17 @@ def preprocess_data(raw_data, raw_labels):
 
     to_one_hot = {}
     number_of_labels = len(set(labels))
-    for i,l in enumerate(sorted(list(set(labels)))):
+    sorted_labels = sorted(list(set(labels)))
+    for i,l in enumerate(sorted_labels):
         to_one_hot[l] = number_of_labels*[0]
         to_one_hot[l][i] = 1
         to_one_hot[l] = np.array(to_one_hot[l])
         
     labels = [to_one_hot[l] for l in labels]
+
     
-    return (data, labels)
+    
+    return (data, labels, tuple(sorted_labels))
     
 
 print('Reading data..')
@@ -56,8 +59,12 @@ plt.show()
 print(training_data[1][0])
 """
 
+#same_training_data = [training_data[0][0] for i in range(1000000)]
+#same_training_label = [training_data[1][0] for i in range(1000000)]
+
 print('Training...')
-C = train(training_data[0], training_data[1], 200, 0.1)
+C = train(training_data[0], training_data[1], 100, 0.1)
+#C = train(same_training_data, same_training_label, 200, 0.1)
 
 plt.plot(C)
 plt.ylabel('Average training cost')
@@ -65,6 +72,8 @@ plt.show()
 
 
 for i in range(10):
-    print(forward_propagate(testing_data[0][i]))
+    oha = forward_propagate(testing_data[0][i])
+    print(testing_data[2][max(range(len(oha)), key=lambda i: oha[i])])
+    #print(forward_propagate(same_training_data[0]))
     plt.imshow(testing_data[0][i].reshape((28,28)))
     plt.show()    

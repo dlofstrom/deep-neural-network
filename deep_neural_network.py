@@ -22,7 +22,7 @@ def sigmoid(Z):
 # Forward propagate network
 # X: Input data array size of first layer
 # Return value: Calculated last layer
-def forward_propagate(X):
+def forward_propagate(X,p=False):
     global neurons
     global weights
     
@@ -33,8 +33,12 @@ def forward_propagate(X):
 
     # Go through every layer and calculate neuron activation
     for i in range(len(neurons)-1):
-        neurons[i+1][:-1] = np.matmul(weights[i], sigmoid(neurons[i]))
+        neurons[i+1][:-1] = np.matmul(weights[i], np.concatenate((sigmoid(neurons[i][:-1]),[[1]]),axis=0))
 
+    if p:
+        print(neurons)
+
+        
     return sigmoid(neurons[-1][:-1])
 
 
