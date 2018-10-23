@@ -11,6 +11,8 @@ The theory in this code comes from the YouTube channel [3Blue1Brown](https://www
 - [What is backpropagation really doing? | Deep learning, chapter 3](https://youtu.be/Ilg3gGewQ5U)
 - [Backpropagation calculus | Deep learning, chapter 4](https://youtu.be/tIeHLnjs5U8)
 
+And [this](http://neuralnetworksanddeeplearning.com/chap2.html) article by [Michael Nielsen](http://michaelnielsen.org/)
+
 ## Data
 Data of handwritten digits are from [The MNIST DATABASE](http://yann.lecun.com/exdb/mnist/)
 
